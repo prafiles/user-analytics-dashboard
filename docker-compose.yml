@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  dashboard:
+    build:
+      context: .
+    image: prafiles/user-analytics-dashboard:latest
+    container_name: dashboard
+    entrypoint: ["npm", "run"]
+    ports:
+    - "3000:3000"
+    depends_on:
+    - "mongodb"
+
+  dashboard-dev:
+    build:
+      context: .
+    image: prafiles/user-analytics-dashboard:latest
+    container_name: dashboard-dev
+    volumes:
+    - .:/src
+    working_dir: /src
+    entrypoint: ["nodemon", "bin/www"]
+    ports:
+    - "3000:3000"
+    depends_on:
+    - "mongodb"
+
+  shell:
+    tty: true
+    stdin_open: true
+    image: prafiles/user-analytics-dashboard:latest
+    container_name: shell
+    entrypoint: ["bash"]
+
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+    - MONGO_DATA_DIR=/data/db
+    - MONGO_LOG_DIR=/dev/null
+    volumes:
+    - dashboard-mongodb:/data/db
+    ports:
+    - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+volumes:
+  dashboard-mongodb:
+    external: true
