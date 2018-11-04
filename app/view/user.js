@@ -32,12 +32,18 @@ function getUser(res, params) {
  * @param params User Object Parameters (assuming fully updated record here)
  */
 function upsertUser(res, params) {
-  if (!params.email && !params.phone) { //Return a bad request if both phone and email are missing
+  //We try and find user by her email or phone
+  let query = {};
+  if (params.email && params.phone)
+    query = {$or: [{'email': params.email}, {'phone': params.phone}]};
+  else if (params.email) {
+    query = {'email': params.email}
+  } else if (params.phone) {
+    query = {'phone': params.phone}
+  } else { //Return a bad request if both phone and email are missing
     return res.status(400).json({message: 'Need phone number or email for upserting user.'});
   }
-
-  //We try and find user by her email or phone
-  UserModel.findOne({$or: [{'email': params.email}, {'phone': params.phone}]}, (err, user) => {
+  UserModel.findOne(query, (err, user) => {
     if (err) {
       console.error(err);
       res.status(500).json({message: 'Error in getting users while upserting user. Check console.log for more details.'});
