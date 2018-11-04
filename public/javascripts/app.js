@@ -1,9 +1,15 @@
+/**
+ * Renders the bubble chart on the specified id
+ * @param id
+ */
 function renderUserCityCountBubbleChart(id) {
   $.ajax({
     type: "GET",
     url: '/api/user-city',
     success: function (result) {
       let datasets = [];
+
+      //We need special data format for axes since chartjs requires us to convert to numbers
       let records = result.records;
       let cities = result.cities;
       let users = result.users;
@@ -14,7 +20,6 @@ function renderUserCityCountBubbleChart(id) {
           r: records[i].count * 10,
         })
       }
-      console.log(datasets);
       let options = {
         type: 'bubble',
         data: {
@@ -28,7 +33,7 @@ function renderUserCityCountBubbleChart(id) {
           ]
         },
         options: {
-          scales: {
+          scales: { //Then we back convert axes to create the required charts
             yAxes: [{
               ticks: {
                 callback: function (value, index, values) {
@@ -57,6 +62,11 @@ function renderUserCityCountBubbleChart(id) {
   });
 }
 
+/**
+ * Render the aggregate donut chart
+ * @param id HTML Canvas element id
+ * @param key API parameter for aggregation
+ */
 function renderAggregateChart(id, key) {
   $.ajax({
     type: "GET",
@@ -92,7 +102,11 @@ function renderAggregateChart(id, key) {
 }
 
 
-//Sourced from: https://stackoverflow.com/questions/40537024/chart-js-pie-chart-background-colors-is-there-any-way-to-generate-them-randomly
+/**
+ * Generates random color each time it is called. Used for choosing colors while rendering.
+ * Sourced from: https://stackoverflow.com/questions/40537024/chart-js-pie-chart-background-colors-is-there-any-way-to-generate-them-randomly
+ * @returns {string}
+ */
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';
