@@ -1,8 +1,8 @@
 let mongoose = require('mongoose');
-mongoose.set('useCreateIndex', true); //To avoid deprecation warnings from new versions of MongoDB
-
 let uniqueValidator = require('mongoose-unique-validator');
+const userConstants = require('../constants/user');
 
+mongoose.set('useCreateIndex', true); //To avoid deprecation warnings from new versions of MongoDB
 mongoose.connect('mongodb://localhost/userAnalytics', {useNewUrlParser: true}); //To avoid deprecation warnings from new versions of MongoDB
 
 const Schema = mongoose.Schema;
@@ -22,15 +22,16 @@ const UserSchema = new Schema({
     index: true
   },
   city: [{
-    type: String
+    type: String,
+    enum: userConstants.city
   }],
   gender: {
     type: String,
-    enum: ['Female', 'Male']
+    enum: userConstants.gender
   },
   category: {
     type: String,
-    enum: ['V1', 'V2', 'V3']
+    enum: userConstants.category
   }
 }, {timestamps: true});
 
