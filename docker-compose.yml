@@ -16,8 +16,6 @@ services:
     - "mongodb"
 
   dashboard-dev:
-    build:
-      context: .
     image: prafiles/user-analytics-dashboard:latest
     container_name: dashboard-dev
     volumes:
