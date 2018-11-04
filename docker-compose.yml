@@ -6,9 +6,12 @@ services:
       context: .
     image: prafiles/user-analytics-dashboard:latest
     container_name: dashboard
-    entrypoint: ["npm", "run"]
+    entrypoint: ["npm", "start"]
     ports:
     - "3000:3000"
+    networks:
+      analytics-dashboard:
+        ipv4_address: 172.19.0.2
     depends_on:
     - "mongodb"
 
@@ -23,6 +26,9 @@ services:
     entrypoint: ["nodemon", "bin/www"]
     ports:
     - "3000:3000"
+    networks:
+      analytics-dashboard:
+        ipv4_address: 172.19.0.3
     depends_on:
     - "mongodb"
 
@@ -32,6 +38,10 @@ services:
     image: prafiles/user-analytics-dashboard:latest
     container_name: shell
     entrypoint: ["bash"]
+    networks:
+      analytics-dashboard:
+        ipv4_address: 172.19.0.4
+
 
   mongodb:
     image: mongo:latest
@@ -43,8 +53,16 @@ services:
     - dashboard-mongodb:/data/db
     ports:
     - 27017:27017
+    networks:
+      analytics-dashboard:
+        ipv4_address: 172.19.0.5
     command: mongod --smallfiles --logpath=/dev/null # --quiet
 
 volumes:
   dashboard-mongodb:
     external: true
+
+networks:
+  analytics-dashboard:
+    external:
+      name: analytics-dashboard

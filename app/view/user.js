@@ -48,7 +48,7 @@ function upsertUser(res, params) {
             console.error(err);
             res.status(500).json({message: 'Error in creating user. Check console.log for more details.'});
           } else {
-            console.log('User created: ', obj);
+            console.log('User created: ', JSON.stringify(obj));
             res.json({message: 'OK'});
           }
         })
@@ -70,7 +70,7 @@ function upsertUser(res, params) {
             console.error(err);
             res.status(500).json({message: 'Error in updating user. Check console.log for more details.'});
           } else {
-            console.log('User created: ', obj);
+            console.log('User created: ', JSON.stringify(obj));
             res.json({message: 'OK'});
           }
         });

@@ -1,9 +1,10 @@
 let mongoose = require('mongoose');
 let uniqueValidator = require('mongoose-unique-validator');
+const config = require('../../config/config');
 const userConstants = require('../constants/user');
 
 mongoose.set('useCreateIndex', true); //To avoid deprecation warnings from new versions of MongoDB
-mongoose.connect('mongodb://localhost/userAnalytics', {useNewUrlParser: true}); //To avoid deprecation warnings from new versions of MongoDB
+mongoose.connect(config.mongoDBURI, {useNewUrlParser: true}); //To avoid deprecation warnings from new versions of MongoDB
 
 const Schema = mongoose.Schema;
 

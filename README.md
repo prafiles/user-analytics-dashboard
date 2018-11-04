@@ -8,6 +8,11 @@ A sample User Analytics Dashboard for User API.
 
 * Install Docker-Compose from [here](https://docs.docker.com/compose/install/)
 
+* Create a Docker subnet with the following command
+```bash
+docker network create --subnet=172.19.0.0/24 analytics-dashboard
+```
+
 * Clone source from Github:
 ```bash
 git clone https://github.com/prafiles/user-analytics-dashboard
