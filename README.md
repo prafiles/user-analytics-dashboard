@@ -32,3 +32,6 @@ docker-compose up dashboard
 
 
 ### Screenshots ###
+![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/1.png)
+![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/2.png)
+![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/3.png)
