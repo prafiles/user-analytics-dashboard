@@ -4,7 +4,7 @@ let userView = require('../app/view/user');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-  userView.getUser(res, req.params);
+  userView.getUser(res, req.query);
 });
 
 /* UPSERT users listing. */
