@@ -12,12 +12,12 @@ const UserSchema = new Schema({
     type: String,
     lowercase: true,
     unique: true,
-    match: [/\S+@\S+\.\S+/, 'is invalid email'],
+    match: [/\S+@\S+\.\S+/, 'is invalid email'], //string@string.string
     index: true
   },
   phone: {
     type: String,
-    match: [/^\d{10}$/, 'is invalid phone'],
+    match: [/^\d{10}$/, 'is invalid phone'], //10 digit number
     unique: true,
     index: true
   },

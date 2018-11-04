@@ -3,6 +3,12 @@ module.exports = {
   aggregationQuery: aggregationQuery
 };
 
+/**
+ * Generate a count query for user with respective key and value
+ * @param key Column/Key for User Model
+ * @param value Value we're trying to count for
+ * @returns {Function}
+ */
 function aggregationQuery(key, value) {
   return (cb) => {
     let query = {};

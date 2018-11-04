@@ -36,7 +36,7 @@ function upsertUser(res, params) {
     return res.status(400).json({message: 'Need phone number or email for upserting user.'});
   }
 
-  //We try and find user by him email or phone
+  //We try and find user by her email or phone
   UserModel.findOne({$or: [{'email': params.email}, {'phone': params.phone}]}, (err, user) => {
     if (err) {
       console.error(err);
@@ -54,7 +54,7 @@ function upsertUser(res, params) {
         })
       } else { //Update the existing user
 
-        //If the user has existing email or phone, we never let him update it, only merge the PI.
+        //If the user has existing email or phone, we never let her update it, only merge the PI.
         user.email = user.email ? user.email : params.email;
         user.phone = user.phone ? user.phone : params.phone;
 
@@ -89,9 +89,13 @@ function getAggregatedCount(res, key) {
   if (!values) {
     return res.status(400).json({message: 'Need key to defined in constants for aggregation.'});
   }
+
+  //Generate a query for each value
   for (let index = 0; index < userConstants[key].length; index++) {
     funcArr[index] = generators.aggregationQuery(key, values[index]);
   }
+
+  //Fire the queries in parallel
   async.parallel(funcArr, (err, result) => {
     if (err) {
       console.error(err);
@@ -102,6 +106,10 @@ function getAggregatedCount(res, key) {
   });
 }
 
+/**
+ * Get User City Aggregation counts across all users
+ * @param res Express Response Object
+ */
 function getUserCityCounts(res) {
   let cities = userConstants['city'];
   let records = [];
@@ -110,22 +118,24 @@ function getUserCityCounts(res) {
       console.error(err);
       res.status(500).json({message: 'Error in getting users while getting User-City Counts. Check console.log for more details.'});
     } else {
-      for (let i = 0; i < data.length; i++) {
+      for (let i = 0; i < data.length; i++) { //For each user
         let user = data[i];
         let userString = user.email ? user.email : user.phone;
-        for (let j = 0; j < cities.length; j++) {
+        for (let j = 0; j < cities.length; j++) { //For each city
+
+          //Find city counts per city inside each user
           let indices = user.city.reduce(function (aggregate, element, index) {
             if (element === cities[j])
               aggregate.push(index);
             return aggregate;
           }, []);
 
+          //Add it to records array
           records.push({
             user: userString,
             city: cities[j],
             count: indices.length
           });
-          console.log(cities[j], indices.length);
         }
       }
       res.json(records);

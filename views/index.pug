@@ -2,4 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Bubble chart for User-City Counts
+  canvas(id="chart1", width="600", height="400")
+block script
+  script.
+    renderUserCityCountBubbleChart('chart1');
+
+
+
