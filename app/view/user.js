@@ -38,6 +38,7 @@ function upsertUser(res, params) {
       if (!user) { //Create new user if we couldn't find any
         UserModel.create(params, (err, obj) => {
           if (err) {
+            console.error(err);
             res.status(500).json({message: 'Error in creating user. Check console.log for more details.'});
           } else {
             console.log('User created: ', obj);
@@ -51,6 +52,7 @@ function upsertUser(res, params) {
         user.city.push(params.city);
         user.save((err, obj) => {
           if (err) {
+            console.error(err);
             res.status(500).json({message: 'Error in updating user. Check console.log for more details.'});
           } else {
             console.log('User created: ', obj);
@@ -58,6 +60,17 @@ function upsertUser(res, params) {
           }
         });
       }
+    }
+  });
+}
+
+function getAggregatedCount() {
+  UserModel.find({}, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({message: 'Error in getting users. Check console.log for more details.'});
+    } else {
+      res.json(data);
     }
   });
 }

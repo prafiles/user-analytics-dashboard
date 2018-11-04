@@ -24,8 +24,14 @@ const UserSchema = new Schema({
   city: [{
     type: String
   }],
-  gender: String,
-  category: Number
+  gender: {
+    type: String,
+    enum: ['Female', 'Male']
+  },
+  category: {
+    type: String,
+    enum: ['V1', 'V2', 'V3']
+  }
 }, {timestamps: true});
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
