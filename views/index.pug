@@ -3,10 +3,19 @@ extends layout
 block content
   h1= title
   p Bubble chart for User-City Counts
-  canvas(id="chart1", width="600", height="400")
+  div(style="max-width:640px;height:480px;")
+    canvas(id="chart1")
+  p Category Pie Chart
+  div(style="max-width:640px;height:480px;")
+    canvas(id="chart2")
+  p Category Gender Chart
+  div(style="max-width:640px;height:480px;")
+    canvas(id="chart3")
 block script
   script.
     renderUserCityCountBubbleChart('chart1');
+    renderAggregateChart('chart2', 'category');
+    renderAggregateChart('chart3', 'gender');
 
 
 

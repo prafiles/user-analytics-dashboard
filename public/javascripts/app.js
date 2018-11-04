@@ -3,27 +3,85 @@ function renderUserCityCountBubbleChart(id) {
     type: "GET",
     url: '/api/user-city',
     success: function (result) {
-      console.log(result);
-      var options = {
+      let datasets = [];
+      let records = result.records;
+      let cities = result.cities;
+      let users = result.users;
+      for (let i = 0; i < records.length; i++) {
+        datasets.push({
+          x: records[i].user,
+          y: records[i].city,
+          r: records[i].count * 10,
+        })
+      }
+      console.log(datasets);
+      let options = {
         type: 'bubble',
         data: {
           datasets: [
             {
-              label: 'John',
-              data: [
-                {
-                  x: 3,
-                  y: 7,
-                  r: 10
-                }
-              ],
-              backgroundColor:"#ff6384",
-              hoverBackgroundColor: "#ff6384"
+              label: 'User City Counts',
+              data: datasets,
+              backgroundColor: getRandomColor(),
+              hoverBackgroundColor: getRandomColor()
             }
           ]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                callback: function (value, index, values) {
+                  return cities[value];
+                }
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                callback: function (value, index, values) {
+                  return users[value];
+                }
+              }
+            }]
+          }
         }
+
       };
 
+      let ctx = document.getElementById(id).getContext('2d');
+      new Chart(ctx, options);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      alert("Unable to get data from API. Please try again.");
+    }
+  });
+}
+
+function renderAggregateChart(id, key) {
+  $.ajax({
+    type: "GET",
+    url: '/api/' + key,
+    success: function (result) {
+      let datasets = [];
+      let labels = [];
+      let colors = [];
+      for (let i = 0; i < result.length; i++) {
+        for (let key in result[i]) {
+          labels.push(key);
+          datasets.push(result[i][key]);
+          colors.push(getRandomColor());
+        }
+      }
+      let options = {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: datasets,
+            backgroundColor: colors
+          }],
+          labels: labels
+        },
+      };
       var ctx = document.getElementById(id).getContext('2d');
       new Chart(ctx, options);
     },
@@ -31,24 +89,15 @@ function renderUserCityCountBubbleChart(id) {
       alert("Unable to get data from API. Please try again.");
     }
   });
-
 }
 
-// function renderUserCityCountBubbleChart() {
-//   $.ajax({
-//     type: "GET",
-//     url: '/constants/',
-//     data: {
-//       table: "Tbl_5_1_Eff",
-//       Compliance: current_compliance_level,
-//       Type: chiller_type
-//     },
-//     success: function (result) {
-//     },
-//     error: function (XMLHttpRequest, textStatus, errorThrown) {
-//       alert("Unable to get data from API. Please try again.");
-//     }
-//   });
-//
-// }
 
+//Sourced from: https://stackoverflow.com/questions/40537024/chart-js-pie-chart-background-colors-is-there-any-way-to-generate-them-randomly
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

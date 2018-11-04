@@ -113,6 +113,7 @@ function getAggregatedCount(res, key) {
 function getUserCityCounts(res) {
   let cities = userConstants['city'];
   let records = [];
+  let users = [];
   UserModel.find({}, 'email phone city', (err, data) => {
     if (err) {
       console.error(err);
@@ -121,6 +122,8 @@ function getUserCityCounts(res) {
       for (let i = 0; i < data.length; i++) { //For each user
         let user = data[i];
         let userString = user.email ? user.email : user.phone;
+        users.push(userString);
+
         for (let j = 0; j < cities.length; j++) { //For each city
 
           //Find city counts per city inside each user
@@ -132,13 +135,13 @@ function getUserCityCounts(res) {
 
           //Add it to records array
           records.push({
-            user: userString,
-            city: cities[j],
+            user: i,
+            city: j,
             count: indices.length
           });
         }
       }
-      res.json(records);
+      res.json({records: records, users: users, cities: cities});
     }
   });
 }
