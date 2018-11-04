@@ -14,13 +14,15 @@ const UserSchema = new Schema({
     lowercase: true,
     unique: true,
     match: [/\S+@\S+\.\S+/, 'is invalid email'], //string@string.string
-    index: true
+    index: true,
+    sparse: true
   },
   phone: {
     type: String,
     match: [/^\d{10}$/, 'is invalid phone'], //10 digit number
     unique: true,
-    index: true
+    index: true,
+    sparse: true
   },
   city: [{
     type: String,
