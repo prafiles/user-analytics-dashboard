@@ -40,3 +40,6 @@ docker-compose up dashboard
 ![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/1.png)
 ![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/2.png)
 ![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/3.png)
+
+### Module Dependency Diagram ###
+![](https://raw.githubusercontent.com/prafiles/user-analytics-dashboard/master/docs/4.png)
