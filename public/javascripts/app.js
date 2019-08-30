@@ -8,7 +8,6 @@ function renderUserCityCountBubbleChart(id) {
     url: '/api/user-city',
     success: function (result) {
       let datasets = [];
-
       //We need special data format for axes since chartjs requires us to convert to numbers
       let records = result.records;
       let cities = result.cities;
@@ -20,6 +19,7 @@ function renderUserCityCountBubbleChart(id) {
           r: records[i].count * 10,
         })
       }
+
       let options = {
         type: 'bubble',
         data: {
@@ -114,4 +114,10 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+
+module.exports = {
+  renderUserCityCountBubbleChart,
+  renderAggregateChart,
 }
