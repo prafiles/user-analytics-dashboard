@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+let router = require('../routes/api');
 
 let app = require('../app');
 let debug = require('debug')('user-analytics-dashboard:server');
@@ -19,9 +20,14 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 let server = http.createServer(app);
+const io = require('socket.io')(server);
 
+io.on('connection', (socket) => {
+  router.webSocket = socket
+  console.log('a client connected');
+  socket.emit('hello-message', 'server response on connection: hey client hello I am server')
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
